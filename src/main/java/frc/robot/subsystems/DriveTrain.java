@@ -4,14 +4,48 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveTrain extends SubsystemBase {
 
-  CANsparkmax leftMotor = new 
+  CANSparkMax leftMotor = new CANSparkMax(1, MotorType.kBrushless);
+  CANSparkMax rightMotor = new CANSparkMax(2, MotorType.kBrushless);
 
-  /** Creates a new DriveTrain. */
+  /** Creates a new Dri(veTrain. */
   public DriveTrain() {}
+
+  public void setMotors(double left, double right){
+    left = scaleLeft(left);
+    right = scaleRight(right);
+
+    setMotorsRaw(left, right);
+  }
+
+  public void setMotorsRaw(double left, double right){
+    left = safetyTest(left);
+    right = safetyTest(right);
+
+    leftMotor.set(left);
+    rightMotor.set(right);
+  }
+
+  private double safetyTest(double motorValue){
+    motorValue = (motorValue < -1) ? -1 : motorValue;
+    motorValue = (motorValue > 1) ? 1 : motorValue;
+
+    return motorValue;
+  }
+
+  private double scaleLeft(double left){
+    return 1.0 * left;
+  }
+
+  private double scaleRight(double right){
+    return 1.0 * right;
+  }
 
   @Override
   public void periodic() {
