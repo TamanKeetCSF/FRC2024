@@ -4,51 +4,59 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveTrain extends SubsystemBase {
+  // The motors on the left side of the drive.
+  private CANSparkMax m_leftLeader = new CANSparkMax(9, MotorType.kBrushless);
+  private CANSparkMax m_leftFollower = new CANSparkMax(8, MotorType.kBrushless);
+  //private final TalonSRX m_leftLeader = new TalonSRX(11);
+  //private final TalonSRX m_leftFollower = new TalonSRX(9);
 
-  CANSparkMax leftMotor = new CANSparkMax(1, MotorType.kBrushless);
-  CANSparkMax rightMotor = new CANSparkMax(2, MotorType.kBrushless);
+  // The motors on the right side of the drive.
+  private CANSparkMax m_rightLeader = new CANSparkMax(3, MotorType.kBrushless);
+  private CANSparkMax m_rightFollower = new CANSparkMax(4, MotorType.kBrushless);
 
-  /** Creates a new Dri(veTrain. */
-  public DriveTrain() {}
+  //private final TalonSRX m_rightLeader = new TalonSRX(13);
+  //private final TalonSRX m_rightFollower = new TalonSRX(12);
 
-  public void setMotors(double left, double right){
+
+  
+	public void setMotors(double left, double right) {
     left = scaleLeft(left);
     right = scaleRight(right);
-
+    
     setMotorsRaw(left, right);
   }
-
-  public void setMotorsRaw(double left, double right){
-    left = safetyTest(left);
-    right = safetyTest(right);
-
-    leftMotor.set(left);
-    rightMotor.set(right);
+  
+  public void setMotorsRaw(double left, double right) {
+    double velocidadleft = safetyTest(left);
+    double velocidadright = safetyTest(right);
+    
+    m_leftLeader.set(-velocidadleft);
+    m_leftFollower.set(-velocidadleft);
+    m_rightLeader.set(velocidadright);	
+    m_rightFollower.set( velocidadright);
+    System.out.println("left: " + velocidadleft + "right" + velocidadright);
+}
+  
+  private double safetyTest(double motorValue) {
+      motorValue = (motorValue < -1) ? -1 : motorValue;
+      motorValue = (motorValue > 1) ? 1 : motorValue;
+      
+      return motorValue;
+  }
+  
+  private double scaleLeft(double left) {
+    return 0.5 * left;
+  }
+  
+  private double scaleRight(double right) {
+    return 0.5 * right;
   }
 
-  private double safetyTest(double motorValue){
-    motorValue = (motorValue < -1) ? -1 : motorValue;
-    motorValue = (motorValue > 1) ? 1 : motorValue;
 
-    return motorValue;
-  }
-
-  private double scaleLeft(double left){
-    return 1.0 * left;
-  }
-
-  private double scaleRight(double right){
-    return 1.0 * right;
-  }
-
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
 }
