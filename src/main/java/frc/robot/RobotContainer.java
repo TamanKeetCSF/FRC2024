@@ -1,110 +1,151 @@
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
 package frc.robot;
 
-import edu.wpi.first.wpilibj.PS4Controller;
+import static edu.wpi.first.wpilibj.XboxController.Button;
+
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.DriveTrain_TankDrive;
-import frc.robot.subsystems.DriveTrain;
+import edu.wpi.first.wpilibj.XboxController.Button;
+import frc.robot.Constants.AutoConstants;
+import frc.robot.Constants.OIConstants;
+import frc.robot.commands.ComplexAuto;
+import frc.robot.commands.DefaultDrive;
+import frc.robot.commands.DriveDistance;
+import frc.robot.commands.HalveDriveSpeed;
+import frc.robot.subsystems.Controles;
+import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.intake;
 import frc.robot.subsystems.outake;
+import edu.wpi.first.wpilibj.shuffleboard.EventImportance;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
- * This class is where the bulk of the robot should be declared.
+ * This class is where the bulk of the robot should be declared. Since Command-based is a
+ * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
+ * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
+ * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-
-    private static RobotContainer m_robotContainer = new RobotContainer();
-
-    // Subsystems
-    public static final DriveTrain m_robotDrive = new DriveTrain();
+  // The robot's subsystems
+  //private final Controles controles = new Controles();
+  public static final DriveSubsystem m_robotDrive = new DriveSubsystem();
     public final intake m_intake = new intake();
-    public final outake m_outake = new outake();  // New outake subsystem
-
-    // Joysticks
-    private final XboxController xboxController1 = new XboxController(0);
-    private final PS4Controller ControlPiloto = new PS4Controller(1);
-    // A chooser for autonomous commands
-    SendableChooser<Command> m_chooser = new SendableChooser<>();
-    /**
-     * The container for the robot. Contains subsystems, OI devices, and commands.
-     */
-    private RobotContainer() {
-        // Configure the button bindings
-        configureButtonBindings();
+    public final outake m_outake = new outake();
 
 
+  //private final HatchSubsystem m_hatchSubsystem = new HatchSubsystem();
+
+  // The autonomous routines
+
+  // A simple auto routine that drives forward a specified distance, and then stops.
+  private final Command m_simpleAuto =
+      new DriveDistance(
+          AutoConstants.kAutoDriveDistanceInches, AutoConstants.kAutoDriveSpeed, m_robotDrive);
+
+  // A complex auto routine that drives forward, drops a hatch, and then drives backward.
+  private final Command m_complexAuto = new ComplexAuto(m_robotDrive);
+
+  // A chooser for autonomous commands
+  SendableChooser<Command> m_chooser = new SendableChooser<>();
+
+  // The driver's controller
+public static final Controles control = new Controles();
+
+  /** The container for the robot. Contains subsystems, OI devices, and commands. */
+  public RobotContainer() {
+    // Configure the button bindings
+    configureButtonBindings();
+
+    // Configure default commands
+    // Set the default drive command to split-stick arcade drive
+    m_robotDrive.setDefaultCommand(
         // A split-stick arcade command, with forward/backward controlled by the left
         // hand, and turning controlled by the right.
-        
-
-
-
-        // Configure autonomous sendable chooser
-        SmartDashboard.putData("Auto Mode", m_chooser);
-    }
-
-    public static RobotContainer getInstance() {
-        return m_robotContainer;
-    }
-
-    /**
-     * Use this method to define your button->command mappings.
-     */
-    private void configureButtonBindings() {
-
-
-        
-        m_robotDrive.setDefaultCommand(
-        // A split-stick arcade command, with forward/backward controlled by the left
-        // hand, and turning controlled by the right.
-        new DriveTrain_TankDrive(
+        new DefaultDrive(
             m_robotDrive,
-            () -> -ControlPiloto.getRawAxis(1),
-            () -> -ControlPiloto.getRawAxis(2)));
+            () -> -RobotContainer.control.readPS4Axis(1),
+            () -> -RobotContainer.control.readPS4Axis(2)));
+
+    // Add commands to the autonomous command chooser
+    m_chooser.setDefaultOption("Simple Auto", m_simpleAuto);
+    m_chooser.addOption("Complex Auto", m_complexAuto);
+
+    // Put the chooser on the dashboard
+    Shuffleboard.getTab("Autonomous").add(m_chooser);
+    // Put subsystems to dashboard.
+    Shuffleboard.getTab("Drivetrain").add(m_robotDrive);
+
+    // Log Shuffleboard events for command initialize, execute, finish, interrupt
+    CommandScheduler.getInstance()
+        .onCommandInitialize(
+            command ->
+                Shuffleboard.addEventMarker(
+                    "Command initialized", command.getName(), EventImportance.kNormal));
+    CommandScheduler.getInstance()
+        .onCommandExecute(
+            command ->
+                Shuffleboard.addEventMarker(
+                    "Command executed", command.getName(), EventImportance.kNormal));
+    CommandScheduler.getInstance()
+        .onCommandFinish(
+            command ->
+                Shuffleboard.addEventMarker(
+                    "Command finished", command.getName(), EventImportance.kNormal));
+    CommandScheduler.getInstance()
+        .onCommandInterrupt(
+            command ->
+                Shuffleboard.addEventMarker(
+                    "Command interrupted", command.getName(), EventImportance.kNormal));
+  }
+
+  /**
+   * Use this method to define your button->command mappings. Buttons can be created by
+   * instantiating a {@link edu.wpi.first.wpilibj.GenericHID} or one of its subclasses ({@link
+   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
+   * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+   */
+  private void configureButtonBindings() {
+    final JoystickButton button1 = new JoystickButton(control.getPS4(), 2);
+    final JoystickButton button2 = new JoystickButton(control.getPS4(), 1);
+    final JoystickButton halveDriveButton = new JoystickButton(control.getPS4(), 3);
 
 
-        // Intake button mappings
-        final JoystickButton buttonA = new JoystickButton(xboxController1, XboxController.Button.kA.value);
-        final JoystickButton buttonB = new JoystickButton(xboxController1, XboxController.Button.kB.value);
 
-        // Outake button mappings
-        final JoystickButton buttonX = new JoystickButton(xboxController1, XboxController.Button.kX.value);
-        final JoystickButton buttonY = new JoystickButton(xboxController1, XboxController.Button.kY.value);
-
-        // Button A activates the intake
-        buttonA.onTrue(new InstantCommand(() -> m_intake.activateIntake(), m_intake))
+    halveDriveButton.whileTrue(new HalveDriveSpeed(m_robotDrive,
+        () -> -control.readJoystickAxis(1),  // Forward/Backward
+        () -> -control.readJoystickAxis(2)   // Rotation
+    ));
+    //Intake
+    button1.onTrue(new InstantCommand(() -> m_intake.activateIntake(), m_intake))
            .onFalse(new InstantCommand(() -> m_intake.stopIntake(), m_intake));
 
-        // Button B stops the intake
-        buttonB.onTrue(new InstantCommand(() -> m_intake.activateDesintake(), m_intake))
-           .onFalse(new InstantCommand(() -> m_intake.stopIntake(), m_intake));
-
-
-        // Button X activates the speeker shooter
-        buttonX.onTrue(new InstantCommand(() -> m_outake.outakeSpeeker(), m_outake))
+    //outake
+    button2.onTrue(new InstantCommand(() -> m_outake.outakeSpeeker(), m_outake))
            .onFalse(new InstantCommand(() -> m_outake.stopOutake(), m_outake));
+   
+    // Grab the hatch when the 'A' button is pressed.
+    //new JoystickButton(m_driverController, Button.kA.value).onTrue(new GrabHatch(m_hatchSubsystem));
+    // Release the hatch when the 'B' button is pressed.
+    //new JoystickButton(m_driverController, Button.kB.value)
+      //  .onTrue(new ReleaseHatch(m_hatchSubsystem));
+    // While holding the shoulder button, drive at half speed
+    //new JoystickButton(control, Button.kRightBumper.value)
+       // .whileTrue(new HalveDriveSpeed(m_robotDrive));
+  }
 
-        // Button Y stops the amp shooter
-        buttonY.onTrue(new InstantCommand(() -> m_outake.outakeAmp(), m_outake))
-           .onFalse(new InstantCommand(() -> m_outake.stopOutake(), m_outake));
-    }
-
-    public XboxController getXboxController1() {
-        return xboxController1;
-    }
-
-    /**
-     * Use this to pass the autonomous command to the main {@link Robot} class.
-     *
-     * @return the command to run in autonomous
-     */
-    public Command getAutonomousCommand() {
-        // The selected command will be run in autonomous
-        return m_chooser.getSelected();
-    }
+  /**
+   * Use this to pass the autonomous command to the main {@link Robot} class.
+   *
+   * @return the command to run in autonomous
+   */
+  public Command getAutonomousCommand() {
+    return m_chooser.getSelected();
+  }
 }
-
