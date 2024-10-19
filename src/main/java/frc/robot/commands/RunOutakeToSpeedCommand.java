@@ -5,28 +5,32 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.outake;
 
 public class RunOutakeToSpeedCommand extends Command {
-  /** Creates a new RunOutakeToSpeedCommand. */
-  public RunOutakeToSpeedCommand() {
-    // Use addRequirements() here to declare subsystem dependencies.
-  }
+    private final outake m_outake;
+    private final double targetSpeed;
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {}
+    public RunOutakeToSpeedCommand(outake outake, double speed) {
+        this.m_outake = outake;
+        this.targetSpeed = speed;
+        addRequirements(outake);
+    }
 
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {}
+    @Override
+    public void initialize() {
+        m_outake.outakeSpeeker(); // Start motors at desired speed
+    }
 
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {}
+    @Override
+    public boolean isFinished() {
+        double currentSpeed = m_outake.getAverageSpeed();
+        return currentSpeed >= targetSpeed;
+    }
 
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return false;
-  }
+    @Override
+    public void end(boolean interrupted) {
+        // Optionally keep running or stop the motors
+        // m_outake.stopOutake(); // Uncomment if you want to stop the motors
+    }
 }

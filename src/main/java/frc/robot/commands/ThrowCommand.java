@@ -5,11 +5,17 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.pneumatics;
+import frc.robot.subsystems.outake;
 
 public class ThrowCommand extends Command {
-  /** Creates a new ThrowCommand. */
+
+  private final outake m_outake = new outake();
+  private final pneumatics m_pneumatics = new pneumatics();
+
   public ThrowCommand() {
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(m_pneumatics, m_outake);
   }
 
   // Called when the command is initially scheduled.
