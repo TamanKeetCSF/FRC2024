@@ -21,20 +21,18 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 
 public class DriveSubsystem extends SubsystemBase {
   // The motors on the left side of the drive.
-  //private CANSparkMax m_leftLeader = new CANSparkMax(9, MotorType.kBrushless);
-  //private CANSparkMax m_leftFollower = new CANSparkMax(8, MotorType.kBrushless);
-  private final TalonSRX m_leftLeader = new TalonSRX(11);
-  private final TalonSRX m_leftFollower = new TalonSRX(9);
+  private CANSparkMax m_leftLeader = new CANSparkMax(9, MotorType.kBrushless);
+  private CANSparkMax m_leftFollower = new CANSparkMax(8, MotorType.kBrushless);
+  //private final TalonSRX m_leftLeader = new TalonSRX(11);
+  //private final TalonSRX m_leftFollower = new TalonSRX(9);
 
   // The motors on the right side of the drive.
-  //private CANSparkMax m_rightLeader = new CANSparkMax(3, MotorType.kBrushless);
-  //private CANSparkMax m_rightFollower = new CANSparkMax(4, MotorType.kBrushless);
+  private CANSparkMax m_rightLeader = new CANSparkMax(3, MotorType.kBrushless);
+  private CANSparkMax m_rightFollower = new CANSparkMax(4, MotorType.kBrushless);
 
-  private final TalonSRX m_rightLeader = new TalonSRX(13);
-  private final TalonSRX m_rightFollower = new TalonSRX(12);
+ // private final TalonSRX m_rightLeader = new TalonSRX(13);
+  //private final TalonSRX m_rightFollower = new TalonSRX(12);
 
-
-  
 	public void setMotors(double left, double right) {
     left = scaleLeft(left);
     right = scaleRight(right);
@@ -47,13 +45,13 @@ public class DriveSubsystem extends SubsystemBase {
     double velocidadright = safetyTest(right);
 
 
-    m_leftLeader.set(ControlMode.PercentOutput, -velocidadleft);
-    m_leftFollower.set(ControlMode.PercentOutput, -velocidadleft);
-    m_rightLeader.set(ControlMode.PercentOutput, velocidadright);	
-    m_rightFollower.set(ControlMode.PercentOutput, velocidadright);
+    //m_leftLeader.set(ControlMode.PercentOutput, -velocidadleft);
+    //m_leftFollower.set(ControlMode.PercentOutput, -velocidadleft);
+    //m_rightLeader.set(ControlMode.PercentOutput, velocidadright);	
+    //m_rightFollower.set(ControlMode.PercentOutput, velocidadright);
 
     
-    //m_leftLeader.set(-velocidadleft);
+    m_leftLeader.set(-velocidadleft);
     //m_leftFollower.set(-velocidadleft);
     //m_rightLeader.set(velocidadright);	
     //m_rightFollower.set( velocidadright);

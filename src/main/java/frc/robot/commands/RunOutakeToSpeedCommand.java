@@ -31,6 +31,6 @@ public class RunOutakeToSpeedCommand extends Command {
     @Override
     public void end(boolean interrupted) {
         // Optionally keep running or stop the motors
-        // m_outake.stopOutake(); // Uncomment if you want to stop the motors
+        m_outake.stopOutake(); // Uncomment if you want to stop the motors
     }
 }

@@ -95,23 +95,23 @@ public class RobotContainer {
   private void configureButtonBindings() {
     final JoystickButton button1 = new JoystickButton(control.getPS4(), 2);
     final JoystickButton button2 = new JoystickButton(control.getPS4(), 1);
-    final JoystickButton halveDriveButton = new JoystickButton(control.getPS4(), 3);
+    //final JoystickButton halveDriveButton = new JoystickButton(control.getPS4(), 3);
 
     // Halve drive speed while holding the button
-    halveDriveButton.whileTrue(
-        new HalveDriveSpeed(
-            m_robotDrive,
-            () -> -control.readJoystickAxis(1),  // Forward/Backward
-            () -> -control.readJoystickAxis(2)   // Rotation
-        )
-    );
+    //halveDriveButton.whileTrue(
+      //  new HalveDriveSpeed(
+        //    m_robotDrive,
+          //  () -> -control.readJoystickAxis(1),  // Forward/Backward
+           // () -> -control.readJoystickAxis(2)   // Rotation
+        //)
+    //);
 
     // Intake controls
     button1.onTrue(new InstantCommand(() -> m_intake.activateIntake(), m_intake))
            .onFalse(new InstantCommand(() -> m_intake.stopIntake(), m_intake));
 
     // Outake with pneumatics command group
-    button2.onTrue(new OutakeAndPistonCommandGroup(m_outake, m_pneumatics, 5000)); // Use desired target speed
+    button2.onTrue(new OutakeAndPistonCommandGroup(m_outake, m_pneumatics, 2000)); // Use desired target speed
 
     // You can add additional button bindings here
   }

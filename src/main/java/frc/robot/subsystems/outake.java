@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class outake extends SubsystemBase {
 
     private CANSparkMax outakeIzquierda = new CANSparkMax(1, MotorType.kBrushless);  
-    private CANSparkMax outakeDerecha = new CANSparkMax(12, MotorType.kBrushless); 
+    private CANSparkMax outakeDerecha = new CANSparkMax(11, MotorType.kBrushless); 
 
     // Add encoders
     private RelativeEncoder encoderIzquierda = outakeIzquierda.getEncoder();
@@ -30,18 +30,20 @@ public class outake extends SubsystemBase {
     public void outakeAmp() {
         outakeIzquierda.set(0.3);  
         outakeDerecha.set(0.3);  
-        System.out.println("Outake amp");
+        //System.out.println("Outake amp");
     }
 
     public void outakeSpeeker() {
         outakeIzquierda.set(0.7);  
         outakeDerecha.set(0.7);  
-        System.out.println("Outake Speeker");
+        //System.out.println(getAverageSpeed());
     }
 
     public void stopOutake() {
         outakeIzquierda.set(0);  
-        outakeDerecha.set(0);  
+        outakeDerecha.set(0); 
+        System.out.println("desactivate outake");
+
     }
 
     // Method to get average motor speed
