@@ -32,14 +32,14 @@ public class intake extends SubsystemBase {
     // Methods to control the intake motors
     // Métodos en el subsistema intake
     public void activateIntake() {
-        intkArriba.set(-0.3);
-        intkAbajo.set(0.3);
+        intkArriba.set(-0.4);
+        intkAbajo.set(0.4);
         System.out.println("intake activated");
     }
 
     public void activateDesintake() {
-        intkArriba.set(0.3); // Activar en reversa
-        intkAbajo.set(-0.3); // Activar en reversa
+        intkArriba.set(0.4); // Activar en reversa
+        intkAbajo.set(-0.4); // Activar en reversa
         System.out.println("Desintake activated");
     }
 

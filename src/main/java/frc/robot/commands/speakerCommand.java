@@ -10,8 +10,8 @@ import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.subsystems.outake;
 import frc.robot.subsystems.pneumatics;
 
-public class OutakeAndPistonCommandGroup extends SequentialCommandGroup {
-    public OutakeAndPistonCommandGroup(outake m_outake, pneumatics m_pneumatics, double targetSpeed) {
+public class speakerCommand extends SequentialCommandGroup {
+    public speakerCommand(outake m_outake, pneumatics m_pneumatics, double targetSpeed) {
         addCommands(
             // Run the outake motors continuously
             new InstantCommand(() -> m_outake.outakeSpeeker(), m_outake),
