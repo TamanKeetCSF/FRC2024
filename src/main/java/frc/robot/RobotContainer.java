@@ -15,7 +15,6 @@ import frc.robot.commands.DefaultDrive;
 import frc.robot.commands.DriveDistance;
 import frc.robot.commands.ampCommand;
 import frc.robot.commands.speakerCommand;
-//import frc.robot.commands.HalveDriveSpeed;
 import frc.robot.subsystems.Controles;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.intake;
@@ -41,7 +40,7 @@ public class RobotContainer {
   public static final DriveSubsystem m_robotDrive = new DriveSubsystem();
     public final intake m_intake = new intake();
     public final outake m_outake = new outake();
-        public final pneumatics m_Pneumatics = new pneumatics();
+    public final pneumatics m_Pneumatics = new pneumatics();
 
 
   //private final HatchSubsystem m_hatchSubsystem = new HatchSubsystem();
@@ -74,6 +73,7 @@ public static final Controles control = new Controles();
         // hand, and turning controlled by the right.
         new DefaultDrive(
             m_robotDrive,
+            () -> control.getPS4().getRawButton(3),
             () -> -RobotContainer.control.readPS4Axis(1),
             () -> -RobotContainer.control.readPS4Axis(2)));
 
@@ -81,33 +81,6 @@ public static final Controles control = new Controles();
     m_chooser.setDefaultOption("Simple Auto", m_simpleAuto);
     m_chooser.addOption("Complex Auto", m_complexAuto);
 
-    // Put the chooser on the dashboard
-    Shuffleboard.getTab("Autonomous").add(m_chooser);
-    // Put subsystems to dashboard.
-    Shuffleboard.getTab("Drivetrain").add(m_robotDrive);
-
-    // Log Shuffleboard events for command initialize, execute, finish, interrupt
-    
-    CommandScheduler.getInstance()
-        .onCommandInitialize(
-            command ->
-                Shuffleboard.addEventMarker(
-                    "Command initialized", command.getName(), EventImportance.kNormal));
-    CommandScheduler.getInstance()
-        .onCommandExecute(
-            command ->
-                Shuffleboard.addEventMarker(
-                    "Command executed", command.getName(), EventImportance.kNormal));
-    CommandScheduler.getInstance()
-        .onCommandFinish(
-            command ->
-                Shuffleboard.addEventMarker(
-                    "Command finished", command.getName(), EventImportance.kNormal));
-    CommandScheduler.getInstance()
-        .onCommandInterrupt(
-            command ->
-                Shuffleboard.addEventMarker(
-                    "Command interrupted", command.getName(), EventImportance.kNormal));
   }
   
 
@@ -143,7 +116,7 @@ public static final Controles control = new Controles();
       //     .onFalse(new InstantCommand(() -> m_outake.stopOutake(), m_outake));
 
     //outakeA
-    button3.onTrue(new ampCommand(m_outake, m_Pneumatics, 1000));
+    button3.onTrue(new ampCommand(m_outake, m_Pneumatics, 1100));
     //button3.onTrue(new InstantCommand(() -> m_outake.outakeAmp(), m_outake))
       //     .onFalse(new InstantCommand(() -> m_outake.stopOutake(), m_outake));
 

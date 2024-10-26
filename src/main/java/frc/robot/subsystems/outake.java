@@ -8,8 +8,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class outake extends SubsystemBase {
 
-    private CANSparkMax outakeIzquierda = new CANSparkMax(1, MotorType.kBrushless);  
-    private CANSparkMax outakeDerecha = new CANSparkMax(11, MotorType.kBrushless); 
+    private CANSparkMax outakeIzquierda = new CANSparkMax(11, MotorType.kBrushless);  
+    private CANSparkMax outakeDerecha = new CANSparkMax(1, MotorType.kBrushless); 
 
     // Add encoders
     private RelativeEncoder encoderIzquierda = outakeIzquierda.getEncoder();
@@ -28,8 +28,8 @@ public class outake extends SubsystemBase {
     }
 
     public void outakeAmp() {
-        outakeIzquierda.set(0.3);  
-        outakeDerecha.set(0.3);  
+        outakeIzquierda.set(0.25);  
+        outakeDerecha.set(0.25);  
         //System.out.println("Outake amp");
     }
 
