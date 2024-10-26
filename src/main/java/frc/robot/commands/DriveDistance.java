@@ -23,12 +23,12 @@ public class DriveDistance extends Command {
     m_distance = inches;
     m_speed = speed;
     m_drive = drive;
-    //addRequirements(m_drive);
+    addRequirements(m_drive);
   }
 
   @Override
   public void initialize() {
-   // m_drive.resetEncoders();
+    //m_drive.resetEncoders();
     //m_drive.arcadeDrive(m_speed, 0);
   }
 

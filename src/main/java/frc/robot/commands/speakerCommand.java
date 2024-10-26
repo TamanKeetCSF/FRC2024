@@ -16,7 +16,11 @@ public class speakerCommand extends SequentialCommandGroup {
             // Run the outake motors continuously
             new InstantCommand(() -> m_outake.outakeSpeeker(), m_outake),
             // Wait until the motors reach the target speed
-            new WaitUntilCommand(() -> m_outake.getAverageSpeed() >= targetSpeed),
+            //new WaitUntilCommand(() -> m_outake.getAverageSpeed() >= targetSpeed),
+            new ParallelCommandGroup(
+                new WaitUntilCommand(() -> m_outake.getAverageSpeed() >= targetSpeed), // Condition 1
+                new WaitCommand(2.0) // Condition 2
+            ),
             // Extend the piston
             new InstantCommand(() -> m_pneumatics.estirarShooter(), m_pneumatics),
             // Wait for 1 second

@@ -32,7 +32,6 @@ public class DriveSubsystem extends SubsystemBase {
 
   //private final TalonSRX m_rightLeader = new TalonSRX(13);
   //private final TalonSRX m_rightFollower = new TalonSRX(12);
-  
 
   
 	public void setMotors(double left, double right) {
