@@ -73,13 +73,13 @@ public static final Controles control = new Controles();
         // hand, and turning controlled by the right.
         new DefaultDrive(
             m_robotDrive,
-            () -> control.getPS4().getRawButton(3),
+            () -> RobotContainer.control.getPS4().getRawButton(8),
             () -> -RobotContainer.control.readPS4Axis(1),
             () -> -RobotContainer.control.readPS4Axis(2)));
 
     // Add commands to the autonomous command chooser
-    m_chooser.setDefaultOption("Simple Auto", m_simpleAuto);
-    m_chooser.addOption("Complex Auto", m_complexAuto);
+    //m_chooser.setDefaultOption("Simple Auto", m_simpleAuto);
+    //m_chooser.addOption("Complex Auto", m_complexAuto);
 
   }
   
@@ -91,26 +91,20 @@ public static final Controles control = new Controles();
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    final JoystickButton button1 = new JoystickButton(control.getPS4(), 2);
-    final JoystickButton button2 = new JoystickButton(control.getPS4(), 1);
-    final JoystickButton button3 = new JoystickButton(control.getPS4(), 3);
-    final JoystickButton button4 = new JoystickButton(control.getPS4(), 4);
+    
 
-    //final JoystickButton halveDriveButton = new JoystickButton(control.getPS4(), 3);
+    final JoystickButton button1 = new JoystickButton(control.getControlPiloto(), 2);
+    final JoystickButton button2 = new JoystickButton(control.getControlPiloto(), 1);
+    final JoystickButton button3 = new JoystickButton(control.getControlPiloto(), 3);
+    final JoystickButton button4 = new JoystickButton(control.getControlPiloto(), 4);
 
-
-
-    //halveDriveButton.whileTrue(new HalveDriveSpeed(m_robotDrive,
-    //    () -> -control.readJoystickAxis(1),  // Forward/Backward
-    //    () -> -control.readJoystickAxis(2)   // Rotation
-    //));
     //Intake
     button1.onTrue(new InstantCommand(() -> m_intake.activateIntake(), m_intake))
            .onFalse(new InstantCommand(() -> m_intake.stopIntake(), m_intake));
 
     //outakeS
 
-        button2.onTrue(new speakerCommand(m_outake, m_Pneumatics, 3500)); // Use desired target speed
+    button2.onTrue(new speakerCommand(m_outake, m_Pneumatics, 3500)); // Use desired target speed
 
     //button2.onTrue(new InstantCommand(() -> m_outake.outakeSpeeker(), m_outake))
       //     .onFalse(new InstantCommand(() -> m_outake.stopOutake(), m_outake));

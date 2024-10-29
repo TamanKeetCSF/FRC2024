@@ -53,7 +53,7 @@ public class DriveSubsystem extends SubsystemBase {
     m_leftLeader.set(-velocidadleft);
     m_leftFollower.set(-velocidadleft);
     m_rightLeader.set(-velocidadright);	
-    m_rightFollower.set( velocidadright);
+    m_rightFollower.set(velocidadright);
     //System.out.println("left: " + velocidadleft);
     //System.out.println("right:" + velocidadright);
 }
@@ -70,7 +70,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
   
   private double scaleRight(double right) {
-    return 0.5 * right;
+    return 0.8 * right;
   }
 
   

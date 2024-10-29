@@ -46,15 +46,15 @@ public class DefaultDrive extends Command {
         double rightPower = m_forward.getAsDouble() - m_rotation.getAsDouble();
 
         // Add a range of the joysticks in which the robot will not respond
-        leftPower = (Math.abs(leftPower) < 0.07) ? 0 : leftPower;
-        rightPower = (Math.abs(rightPower) < 0.07) ? 0 : rightPower;
-
+        
         // If the speeder button is pressed, reduce speed by half
         if (m_speeder.getAsBoolean()) {
-            leftPower /= 2;
-            rightPower /= 2;
+            leftPower /= 5;
+            rightPower /= 5;
         }
-
+        leftPower = (Math.abs(leftPower) < 0.09) ? 0 : leftPower;
+        rightPower = (Math.abs(rightPower) < 0.09) ? 0 : rightPower;
+        
         // Set motor powers
         RobotContainer.m_robotDrive.setMotors(leftPower, rightPower);
     

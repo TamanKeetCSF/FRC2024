@@ -15,7 +15,7 @@ public class pneumatics extends SubsystemBase {
   /** Creates a new pneumatics. */
   
     PneumaticHub m_pH = new PneumaticHub(20);
-    DoubleSolenoid empujador= m_pH.makeDoubleSolenoid(6, 7);
+    DoubleSolenoid empujador= m_pH.makeDoubleSolenoid(8, 9);
 
     
         public void estirarShooter(){

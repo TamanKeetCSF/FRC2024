@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 
 import frc.robot.subsystems.outake;
@@ -17,7 +18,7 @@ public class speakerCommand extends SequentialCommandGroup {
             new InstantCommand(() -> m_outake.outakeSpeeker(), m_outake),
             // Wait until the motors reach the target speed
             //new WaitUntilCommand(() -> m_outake.getAverageSpeed() >= targetSpeed),
-            new ParallelCommandGroup(
+            new ParallelRaceGroup(
                 new WaitUntilCommand(() -> m_outake.getAverageSpeed() >= targetSpeed), // Condition 1
                 new WaitCommand(2.0) // Condition 2
             ),

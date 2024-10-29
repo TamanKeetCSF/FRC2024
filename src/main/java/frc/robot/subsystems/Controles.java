@@ -2,11 +2,11 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
-
 public class Controles {
 
     private static PS4Controller ControlXbox;//
     private static PS4Controller ControlPiloto;//
+
 
     // _____ _ _ _ _ _
     // |_ _| (_) (_) | (_) (_)
@@ -29,7 +29,6 @@ public class Controles {
     // \____/ \___/ \__, |___/\__|_|\___|_|\_\
     // __/ |
     // |___/
-
     public boolean readJoystickButtons(int id) {
         return ControlPiloto.getRawButton(id);
     }
@@ -53,6 +52,15 @@ public class Controles {
     // > < |______| | _ < / _ \ \/ /
     // / . \ | |_) | (_) > <
     // /_/ \_\ |____/ \___/_/\_\
+
+
+
+
+
+
+
+
+    
     public boolean readPS4Buttons(int id) {
         return (ControlXbox.getRawButton(id));
     }

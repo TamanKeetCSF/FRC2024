@@ -16,7 +16,9 @@ public class outake extends SubsystemBase {
     private RelativeEncoder encoderDerecha = outakeDerecha.getEncoder();
 
     public outake() {
-        outakeIzquierda.setInverted(true);
+        outakeDerecha.setInverted(true);
+        outakeIzquierda.setInverted(false);
+
     }
 
     @Override
@@ -34,8 +36,8 @@ public class outake extends SubsystemBase {
     }
 
     public void outakeSpeeker() {
-        outakeIzquierda.set(0.7);  
-        outakeDerecha.set(0.7);  
+        outakeIzquierda.set(0.8);  
+        outakeDerecha.set(0.8);  
         //System.out.println(getAverageSpeed());
     }
 
