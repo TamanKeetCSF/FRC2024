@@ -29,7 +29,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-
+import edu.wpi.first.cameraserver.CameraServer;
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -42,6 +42,7 @@ public class RobotContainer {
     public final intake m_intake = new intake();
     public final outake m_outake = new outake();
     public final pneumatics m_Pneumatics = new pneumatics();
+    
     
     private final Joystick ControlMecanismos = new Joystick(2); 
 
