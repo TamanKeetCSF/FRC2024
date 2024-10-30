@@ -30,7 +30,7 @@ public class speakerCommand extends SequentialCommandGroup {
             new InstantCommand(() -> m_pneumatics.bajarShooter(), m_pneumatics),
             new WaitCommand(1.0),
             // Optionally, stop the outake motors after the piston retracts
-            new InstantCommand(() -> {m_outake.stopOutake(); System.out.println("check");}, m_outake)
+            new InstantCommand(() -> m_outake.stopOutake(), m_outake)
         );
     }
 }

@@ -17,7 +17,7 @@ public class Controles {
 
     public Controles() {
         ControlXbox = new PS4Controller(0);//
-        ControlPiloto = new PS4Controller(1); //
+        ControlPiloto = new PS4Controller(4); //
     }
 
     // -----------------------------------------------------

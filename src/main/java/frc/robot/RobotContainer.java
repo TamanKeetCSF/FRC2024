@@ -6,6 +6,7 @@ package frc.robot;
 
 import static edu.wpi.first.wpilibj.XboxController.Button;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.Constants.AutoConstants;
@@ -27,6 +28,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -36,11 +38,12 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  */
 public class RobotContainer {
   // The robot's subsystems
-  //private final Controles controles = new Controles();
   public static final DriveSubsystem m_robotDrive = new DriveSubsystem();
     public final intake m_intake = new intake();
     public final outake m_outake = new outake();
     public final pneumatics m_Pneumatics = new pneumatics();
+    
+    private final Joystick ControlMecanismos = new Joystick(2); 
 
 
   //private final HatchSubsystem m_hatchSubsystem = new HatchSubsystem();
@@ -63,23 +66,25 @@ public static final Controles control = new Controles();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+
+
     // Configure the button bindings
     configureButtonBindings();
 
     // Configure default commands
-    // Set the default drive command to split-stick arcade drive
+    // First drive
+    
     m_robotDrive.setDefaultCommand(
         // A split-stick arcade command, with forward/backward controlled by the left
         // hand, and turning controlled by the right.
         new DefaultDrive(
             m_robotDrive,
             () -> RobotContainer.control.getPS4().getRawButton(8),
+            () -> RobotContainer.control.getPS4().getRawButton(5),
+            () -> RobotContainer.control.getPS4().getRawButton(6),
             () -> -RobotContainer.control.readPS4Axis(1),
-            () -> -RobotContainer.control.readPS4Axis(2)));
-
-    // Add commands to the autonomous command chooser
-    //m_chooser.setDefaultOption("Simple Auto", m_simpleAuto);
-    //m_chooser.addOption("Complex Auto", m_complexAuto);
+            () -> -RobotContainer.control.readPS4Axis(2),
+            () -> -RobotContainer.control.readPS4Axis(5)));    
 
   }
   
@@ -93,10 +98,18 @@ public static final Controles control = new Controles();
   private void configureButtonBindings() {
     
 
-    final JoystickButton button1 = new JoystickButton(control.getControlPiloto(), 2);
-    final JoystickButton button2 = new JoystickButton(control.getControlPiloto(), 1);
-    final JoystickButton button3 = new JoystickButton(control.getControlPiloto(), 3);
-    final JoystickButton button4 = new JoystickButton(control.getControlPiloto(), 4);
+    final JoystickButton button1 = new JoystickButton(ControlMecanismos, 1); // A button
+    //final JoystickButton button2 = new JoystickButton(ControlMecanismos, 2); // B button
+    final JoystickButton button3 = new JoystickButton(ControlMecanismos, 3); // X button
+    final JoystickButton button4 = new JoystickButton(ControlMecanismos, 4);
+    //final JoystickButton button1 = new JoystickButton(control.readPS4Axis() );
+    //final JoystickButton button2 = new JoystickButton(control.getControlPiloto(), 1);
+    //final JoystickButton button3 = new JoystickButton(control.getControlPiloto(), 3);
+    //final JoystickButton button4 = new JoystickButton(control.getControlPiloto(), 4);
+
+    
+
+
 
     //Intake
     button1.onTrue(new InstantCommand(() -> m_intake.activateIntake(), m_intake))
@@ -104,29 +117,26 @@ public static final Controles control = new Controles();
 
     //outakeS
 
-    button2.onTrue(new speakerCommand(m_outake, m_Pneumatics, 3500)); // Use desired target speed
+    //button2.onTrue(new speakerCommand(m_outake, m_Pneumatics, 3500)); // Use desired target speed
 
     //button2.onTrue(new InstantCommand(() -> m_outake.outakeSpeeker(), m_outake))
       //     .onFalse(new InstantCommand(() -> m_outake.stopOutake(), m_outake));
 
-    //outakeA
-    button3.onTrue(new ampCommand(m_outake, m_Pneumatics, 1100));
-    //button3.onTrue(new InstantCommand(() -> m_outake.outakeAmp(), m_outake))
-      //     .onFalse(new InstantCommand(() -> m_outake.stopOutake(), m_outake));
+    //outakeCome
+    //button3.onTrue(new ampCommand(m_outake, m_Pneumatics, 1100));
+    button3.onTrue(new InstantCommand(() -> m_outake.outakeCome(), m_outake))
+           .onFalse(new InstantCommand(() -> m_outake.stopOutake(), m_outake));
 
     //Desintake
     button4.onTrue(new InstantCommand(() -> m_intake.activateDesintake(), m_intake))
            .onFalse(new InstantCommand(() -> m_intake.stopIntake(), m_intake));
    
-   
-    // Grab the hatch when the 'A' button is pressed.
-    //new JoystickButton(m_driverController, Button.kA.value).onTrue(new GrabHatch(m_hatchSubsystem));
-    // Release the hatch when the 'B' button is pressed.
-    //new JoystickButton(m_driverController, Button.kB.value)
-      //  .onTrue(new ReleaseHatch(m_hatchSubsystem));
-    // While holding the shoulder button, drive at half speed
-    //new JoystickButton(control, Button.kRightBumper.value)
-       // .whileTrue(new HalveDriveSpeed(m_robotDrive));
+    Trigger leftTrigger = new Trigger(() -> ControlMecanismos.getRawAxis(2) > 0.5); // Left trigger
+    Trigger rightTrigger = new Trigger(() -> ControlMecanismos.getRawAxis(3) > 0.5); // Right trigger
+
+        // Bind commands to triggers
+    rightTrigger.onTrue(new speakerCommand(m_outake, m_Pneumatics, 3500)); // Command for left trigger
+    leftTrigger.onTrue(new ampCommand(m_outake, m_Pneumatics, 1100)); // Command for right trigger
   }
 
   /**

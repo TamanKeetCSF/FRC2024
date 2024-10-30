@@ -41,6 +41,12 @@ public class outake extends SubsystemBase {
         //System.out.println(getAverageSpeed());
     }
 
+    public void outakeCome() {
+        outakeIzquierda.set(-0.15);  
+        outakeDerecha.set(-0.15);  
+        //System.out.println(getAverageSpeed());
+    }
+
     public void stopOutake() {
         outakeIzquierda.set(0);  
         outakeDerecha.set(0); 

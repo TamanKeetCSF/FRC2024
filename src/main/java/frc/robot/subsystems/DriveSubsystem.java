@@ -21,8 +21,8 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 
 public class DriveSubsystem extends SubsystemBase {
   // The motors on the left side of the drive.
-  private CANSparkMax m_leftLeader = new CANSparkMax(8, MotorType.kBrushless);
-  private CANSparkMax m_leftFollower = new CANSparkMax(9, MotorType.kBrushless);
+  private CANSparkMax m_leftLeader = new CANSparkMax(9, MotorType.kBrushless);
+  private CANSparkMax m_leftFollower = new CANSparkMax(8, MotorType.kBrushless);
   //private final TalonSRX m_leftLeader = new TalonSRX(11);
   //private final TalonSRX m_leftFollower = new TalonSRX(9);
 
@@ -52,7 +52,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     m_leftLeader.set(-velocidadleft);
     m_leftFollower.set(-velocidadleft);
-    m_rightLeader.set(-velocidadright);	
+    m_rightLeader.set(velocidadright);	
     m_rightFollower.set(velocidadright);
     //System.out.println("left: " + velocidadleft);
     //System.out.println("right:" + velocidadright);
@@ -70,7 +70,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
   
   private double scaleRight(double right) {
-    return 0.8 * right;
+    return 0.5 * right;
   }
 
   

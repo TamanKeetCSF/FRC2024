@@ -22,38 +22,67 @@ public class DefaultDrive extends Command {
   private final DoubleSupplier m_forward;
   private final DoubleSupplier m_rotation;
   public BooleanSupplier m_speeder;
+  public BooleanSupplier m_partDrive;
+  public BooleanSupplier m_fullDrive;
+  private final DoubleSupplier m_forwardRight;
+
+  private boolean DriveModePressed = false;
 
   /**
    * Creates a new DefaultDrive.
    *
    * @param subsystem The drive subsystem this command wil run on.
    * @param speeder
+   * @param partDrive
+   * @param fullDrive
    * @param forward The control input for driving forwards/backwards
-   * @param rotation The control input for turning
+   * @param rotation
+   * @param forwardRight 
    */
-  public DefaultDrive(DriveSubsystem subsystem, BooleanSupplier speeder,DoubleSupplier forward, DoubleSupplier rotation) {
+  public DefaultDrive(DriveSubsystem subsystem, BooleanSupplier speeder, BooleanSupplier partDrive,BooleanSupplier fullDrive ,DoubleSupplier forward, DoubleSupplier rotation, DoubleSupplier forwardRight) {
     m_drive = subsystem;
     m_speeder = speeder;
+    m_partDrive = partDrive;
+    m_fullDrive = fullDrive;
     m_forward = forward;
     m_rotation = rotation;
+    m_forwardRight = forwardRight;
     addRequirements(m_drive);
   } 
   @Override
   public void execute() {
+      double leftPower;
+      double rightPower;
+
+      if (m_partDrive.getAsBoolean()){
+         DriveModePressed = true;
+      }
+      else if (m_fullDrive.getAsBoolean()){
+         DriveModePressed = false;
+      }
 
 
-    double leftPower = m_forward.getAsDouble() + m_rotation.getAsDouble();
-        double rightPower = m_forward.getAsDouble() - m_rotation.getAsDouble();
+      if (DriveModePressed){
+         rightPower = m_forward.getAsDouble();
+         leftPower = m_forwardRight.getAsDouble();
+      }
+      else {
+         leftPower = m_forward.getAsDouble() + m_rotation.getAsDouble();
+         rightPower = m_forward.getAsDouble() - m_rotation.getAsDouble();
+      }
+      
 
         // Add a range of the joysticks in which the robot will not respond
+        
+        
         
         // If the speeder button is pressed, reduce speed by half
         if (m_speeder.getAsBoolean()) {
             leftPower /= 5;
             rightPower /= 5;
         }
-        leftPower = (Math.abs(leftPower) < 0.09) ? 0 : leftPower;
-        rightPower = (Math.abs(rightPower) < 0.09) ? 0 : rightPower;
+        leftPower = (Math.abs(leftPower) < 0.1) ? 0 : leftPower;
+        rightPower = (Math.abs(rightPower) < 0.1) ? 0 : rightPower;
         
         // Set motor powers
         RobotContainer.m_robotDrive.setMotors(leftPower, rightPower);
