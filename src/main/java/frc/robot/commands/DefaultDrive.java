@@ -85,6 +85,7 @@ public class DefaultDrive extends Command {
         rightPower = (Math.abs(rightPower) < 0.1) ? 0 : rightPower;
         
         // Set motor powers
+        System.out.println(m_drive.getAverageEncoderDistance());
         RobotContainer.m_robotDrive.setMotors(leftPower, rightPower);
     
   }

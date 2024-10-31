@@ -6,7 +6,12 @@ package frc.robot.commands;
 
 import frc.robot.Constants.AutoConstants;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.intake;
+import frc.robot.subsystems.outake;
+import frc.robot.subsystems.pneumatics;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 /** A complex auto command that drives forward, releases a hatch, and then drives backward. */
 public class ComplexAuto extends SequentialCommandGroup {
@@ -14,19 +19,22 @@ public class ComplexAuto extends SequentialCommandGroup {
    * Creates a new ComplexAuto.
    *
    * @param drive The drive subsystem this command will run on
-   * @param hatch The hatch subsystem this command will run on
    */
-  public ComplexAuto(DriveSubsystem drive) {
+  public ComplexAuto(DriveSubsystem drive, outake m_outake, pneumatics m_Pneumatics, intake m_intake) {
     addCommands(
-        // Drive forward the specified distance
-        new DriveDistance(
-            AutoConstants.kAutoDriveDistanceInches, AutoConstants.kAutoDriveSpeed, drive),
+    
+    new InstantCommand(() -> drive.encoderReset(), drive) ,
+    new speakerCommand(m_outake, m_Pneumatics, 3500),
+    new InstantCommand(() -> m_intake.activateIntake(), m_intake),
+    new DriveDistance(39.37, 0.1, drive),
+    new WaitCommand(0.5),
+    new InstantCommand(() -> m_intake.activateIntake(), m_intake),
+    new DriveDistance(39.37, 0.1, drive));
 
-        // Release the hatch
-        //new ReleaseHatch(hatch),
 
-        // Drive backward the specified distance
-        new DriveDistance(
-            AutoConstants.kAutoBackupDistanceInches, -AutoConstants.kAutoDriveSpeed, drive));
+
+
+
+        
   }
 }

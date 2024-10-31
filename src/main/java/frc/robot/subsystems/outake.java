@@ -56,6 +56,6 @@ public class outake extends SubsystemBase {
 
     // Method to get average motor speed
     public double getAverageSpeed() {
-        return (encoderIzquierda.getVelocity() + encoderDerecha.getVelocity()) / 2.0;
+        return (Math.abs(encoderIzquierda.getVelocity()) + Math.abs(encoderDerecha.getVelocity())) / 2.0;
     }
 }

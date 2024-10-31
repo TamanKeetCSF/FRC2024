@@ -51,16 +51,8 @@ public class RobotContainer {
 
   // The autonomous routines
 
-  // A simple auto routine that drives forward a specified distance, and then stops.
-  private final Command m_simpleAuto =
-      new DriveDistance(
-          AutoConstants.kAutoDriveDistanceInches, AutoConstants.kAutoDriveSpeed, m_robotDrive);
-
   // A complex auto routine that drives forward, drops a hatch, and then drives backward.
   private final Command m_complexAuto = new ComplexAuto(m_robotDrive);
-
-  // A chooser for autonomous commands
-  SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   // The driver's controller
 public static final Controles control = new Controles();
@@ -74,7 +66,7 @@ public static final Controles control = new Controles();
 
     // Configure default commands
     // First drive
-    
+     
     m_robotDrive.setDefaultCommand(
         // A split-stick arcade command, with forward/backward controlled by the left
         // hand, and turning controlled by the right.
@@ -85,9 +77,12 @@ public static final Controles control = new Controles();
             () -> RobotContainer.control.getPS4().getRawButton(6),
             () -> -RobotContainer.control.readPS4Axis(1),
             () -> -RobotContainer.control.readPS4Axis(2),
-            () -> -RobotContainer.control.readPS4Axis(5)));    
+            () -> -RobotContainer.control.readPS4Axis(5)));   
 
   }
+   
+
+
   
 
   /**
@@ -103,10 +98,6 @@ public static final Controles control = new Controles();
     //final JoystickButton button2 = new JoystickButton(ControlMecanismos, 2); // B button
     final JoystickButton button3 = new JoystickButton(ControlMecanismos, 3); // X button
     final JoystickButton button4 = new JoystickButton(ControlMecanismos, 4);
-    //final JoystickButton button1 = new JoystickButton(control.readPS4Axis() );
-    //final JoystickButton button2 = new JoystickButton(control.getControlPiloto(), 1);
-    //final JoystickButton button3 = new JoystickButton(control.getControlPiloto(), 3);
-    //final JoystickButton button4 = new JoystickButton(control.getControlPiloto(), 4);
 
     
 
@@ -116,7 +107,7 @@ public static final Controles control = new Controles();
     button1.onTrue(new InstantCommand(() -> m_intake.activateIntake(), m_intake))
            .onFalse(new InstantCommand(() -> m_intake.stopIntake(), m_intake));
 
-    //outakeS
+    //outakeS    
 
     //button2.onTrue(new speakerCommand(m_outake, m_Pneumatics, 3500)); // Use desired target speed
 
@@ -146,6 +137,6 @@ public static final Controles control = new Controles();
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return m_chooser.getSelected();
+    return m_complexAuto;
   }
 }
