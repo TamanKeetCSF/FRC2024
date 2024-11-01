@@ -15,6 +15,7 @@ import frc.robot.commands.ComplexAuto;
 import frc.robot.commands.DefaultDrive;
 import frc.robot.commands.DriveDistance;
 import frc.robot.commands.ampCommand;
+import frc.robot.commands.autoIzquierda;
 import frc.robot.commands.speakerCommand;
 import frc.robot.subsystems.Controles;
 import frc.robot.subsystems.DriveSubsystem;
@@ -42,17 +43,14 @@ public class RobotContainer {
     public final intake m_intake = new intake();
     public final outake m_outake = new outake();
     public final pneumatics m_Pneumatics = new pneumatics();
+    private final Joystick ControlMecanismos = new Joystick(1);
     
-    
-    private final Joystick ControlMecanismos = new Joystick(2); 
-
-
-  //private final HatchSubsystem m_hatchSubsystem = new HatchSubsystem();
 
   // The autonomous routines
 
-  // A complex auto routine that drives forward, drops a hatch, and then drives backward.
-  private final Command m_complexAuto = new ComplexAuto(m_robotDrive);
+  // A complex auto routine that shoots,  drives forward, sucks a note, and then drives backward.
+  private final Command m_complexAuto = new ComplexAuto(m_robotDrive, m_outake, m_Pneumatics, m_intake);
+  private final Command m_autoIzquierda = new autoIzquierda(m_robotDrive, m_outake, m_Pneumatics, m_intake);
 
   // The driver's controller
 public static final Controles control = new Controles();
@@ -97,7 +95,7 @@ public static final Controles control = new Controles();
     final JoystickButton button1 = new JoystickButton(ControlMecanismos, 1); // A button
     //final JoystickButton button2 = new JoystickButton(ControlMecanismos, 2); // B button
     final JoystickButton button3 = new JoystickButton(ControlMecanismos, 3); // X button
-    final JoystickButton button4 = new JoystickButton(ControlMecanismos, 4);
+    final JoystickButton button4 = new JoystickButton(ControlMecanismos, 2);// B button
 
     
 
@@ -128,7 +126,7 @@ public static final Controles control = new Controles();
 
         // Bind commands to triggers
     rightTrigger.onTrue(new speakerCommand(m_outake, m_Pneumatics, 3500)); // Command for left trigger
-    leftTrigger.onTrue(new ampCommand(m_outake, m_Pneumatics, 1100)); // Command for right trigger
+    leftTrigger.onTrue(new ampCommand(m_outake, m_Pneumatics, 1000)); // Command for right trigger
   }
 
   /**
@@ -137,6 +135,7 @@ public static final Controles control = new Controles();
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return m_complexAuto;
+    //return m_complexAuto;
+    return m_autoIzquierda;
   }
 }

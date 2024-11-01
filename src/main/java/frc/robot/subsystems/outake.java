@@ -30,14 +30,14 @@ public class outake extends SubsystemBase {
     }
 
     public void outakeAmp() {
-        outakeIzquierda.set(0.25);  
-        outakeDerecha.set(0.25);  
+        outakeIzquierda.set(0.17);  
+        outakeDerecha.set(0.17);  
         //System.out.println("Outake amp");
     }
 
     public void outakeSpeeker() {
-        outakeIzquierda.set(0.8);  
-        outakeDerecha.set(0.8);  
+        outakeIzquierda.set(0.85);  
+        outakeDerecha.set(0.85);  
         //System.out.println(getAverageSpeed());
     }
 

@@ -44,8 +44,8 @@ public class intake extends SubsystemBase {
     }
 
     public void stopIntake() {
-        intkArriba.set(0); // Activar en reversa
-        intkAbajo.set(0); // Activar en reversa
+        intkArriba.set(0.001); // Activar en reversa
+        intkAbajo.set(0.001); // Activar en reversa
         System.out.println("intake stoped");
     }
 }

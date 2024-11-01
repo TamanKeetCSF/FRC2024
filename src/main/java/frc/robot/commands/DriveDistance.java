@@ -15,12 +15,12 @@ public class DriveDistance extends Command {
   /**
    * Creates a new DriveDistance.
    *
-   * @param inches The number of inches the robot will drive
+   * @param cm The number of inches the robot will drive
    * @param speed The speed at which the robot will drive
    * @param drive The drive subsystem on which this command will run
    */
-  public DriveDistance(double inches, double speed, DriveSubsystem drive) {
-    m_distance = inches;
+  public DriveDistance(double cm, double speed, DriveSubsystem drive) {
+    m_distance = cm;
     m_speed = speed;
     m_drive = drive;
     addRequirements(m_drive);
@@ -45,6 +45,6 @@ public class DriveDistance extends Command {
   @Override
   public boolean isFinished() {
     //System.out.println(m_drive.getAverageEncoderDistance());
-    return m_drive.getAverageEncoderDistance() >= (m_distance / 1.869);
+    return m_drive.getAverageEncoderDistance() >= (m_distance / 4.8);
   }
 }

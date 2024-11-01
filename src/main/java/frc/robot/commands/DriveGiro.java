@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DriveSubsystem;
 
+
 public class DriveGiro extends Command {
   private final DriveSubsystem m_drive;
   private final double m_giro;
@@ -32,19 +33,17 @@ public class DriveGiro extends Command {
   @Override
   public void initialize() {
     m_drive.resetEncoders();
-    
-    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (m_giro > 0){
-      m_drive.setMotorsRaw(.1, -0.1);
-    }
-    else{
-      m_drive.setMotorsRaw(-.1, 0.1);
-    }
+    //if (m_giro > 0){
+      m_drive.setMotorsRaw(m_speed, -m_speed);
+    //}
+    //else{
+      //m_drive.setMotorsRaw(-m_speed, m_speed);
+    //}
   }
 
   // Called once the command ends or is interrupted.
@@ -56,10 +55,6 @@ public class DriveGiro extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    m_drive.getLeftEncoder();
-    m_drive.getRightEncoder();
-    
-
-    return m_drive.getAverageEncoderDistance() == (m_giro / 1.869);
+    return  (m_drive.getRightEncoder() >= (m_giro * 0.108) && m_drive.getLeftEncoder() >= (m_giro * 0.108));
   }
 }

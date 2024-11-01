@@ -64,7 +64,7 @@ public class DriveSubsystem extends SubsystemBase {
     setMotorsRaw(left, right);
   }
   
-  public void setMotorsRaw(double left, double right) {
+  public void setMotorsRaw(double left, double right ) {
     double velocidadleft = safetyTest(left);
     double velocidadright = safetyTest(right);
 
@@ -75,7 +75,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     m_leftLeader.set(-velocidadleft);
     m_leftFollower.set(-velocidadleft);
-    m_rightLeader.set(velocidadright);	
+    m_rightLeader.set(velocidadright );	
     m_rightFollower.set(velocidadright);
     //System.out.println("left: " + velocidadleft);
     //System.out.println("right:" + velocidadright);
@@ -89,18 +89,19 @@ public class DriveSubsystem extends SubsystemBase {
   }
   
   private double scaleLeft(double left) {
-    return 0.5 * left;
+    return 0.6 * left;
   }
   
   private double scaleRight(double right) {
-    return 0.5 * right;
+    return 0.65 * right;
   }
 
   //Encoders
 
   // The left-side drive encoder
-  
-      
+
+
+
   public void resetEncoders() {
     EncoderL.setPosition(0);
      EncoderR.setPosition(0);
