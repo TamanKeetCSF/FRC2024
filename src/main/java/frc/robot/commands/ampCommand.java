@@ -19,7 +19,7 @@ public class ampCommand extends SequentialCommandGroup {
             // Wait until the motors reach the target speed
             new ParallelRaceGroup(
                 new WaitUntilCommand(() -> m_outake.getAverageSpeed() >= targetSpeed), // Condition 1
-                new WaitCommand(2.0) // Condition 2
+                new WaitCommand(1.3) // Condition 2
             ),
             // Extend the piston
             new InstantCommand(() -> m_pneumatics.estirarShooter(), m_pneumatics),

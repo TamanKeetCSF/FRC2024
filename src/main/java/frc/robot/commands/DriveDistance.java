@@ -29,17 +29,17 @@ public class DriveDistance extends Command {
   @Override
   public void initialize() {
     m_drive.resetEncoders();
-    m_drive.setMotorsRaw(m_speed, m_speed);
+    m_drive.setMotorsRaw(m_speed, m_speed, 1);
   }
 
   @Override
   public void execute() {
-   m_drive.setMotorsRaw(m_speed, m_speed);
+   m_drive.setMotorsRaw(m_speed, m_speed, 1);
   }
 
   @Override
   public void end(boolean interrupted) {
-    m_drive.setMotorsRaw(0, 0);
+    m_drive.setMotorsRaw(0, 0, 1);
   }
 
   @Override

@@ -24,7 +24,7 @@ public class DefaultDrive extends Command {
   public BooleanSupplier m_speeder;
   public BooleanSupplier m_partDrive;
   public BooleanSupplier m_fullDrive;
-  private final DoubleSupplier m_forwardRight;
+  int polaridad = 1;
 
   private boolean DriveModePressed = false;
 
@@ -37,16 +37,14 @@ public class DefaultDrive extends Command {
    * @param fullDrive
    * @param forward The control input for driving forwards/backwards
    * @param rotation
-   * @param forwardRight 
    */
-  public DefaultDrive(DriveSubsystem subsystem, BooleanSupplier speeder, BooleanSupplier partDrive,BooleanSupplier fullDrive ,DoubleSupplier forward, DoubleSupplier rotation, DoubleSupplier forwardRight) {
+  public DefaultDrive(DriveSubsystem subsystem, BooleanSupplier speeder, BooleanSupplier partDrive,BooleanSupplier fullDrive ,DoubleSupplier forward, DoubleSupplier rotation) {
     m_drive = subsystem;
     m_speeder = speeder;
     m_partDrive = partDrive;
     m_fullDrive = fullDrive;
     m_forward = forward;
     m_rotation = rotation;
-    m_forwardRight = forwardRight;
     addRequirements(m_drive);
   } 
   @Override
@@ -63,17 +61,16 @@ public class DefaultDrive extends Command {
 
 
       if (DriveModePressed){
-         rightPower = m_forward.getAsDouble();
-         leftPower = m_forwardRight.getAsDouble();
+        polaridad = -1; 
       }
       else {
-         leftPower = m_forward.getAsDouble() + m_rotation.getAsDouble();
-         rightPower = m_forward.getAsDouble() - m_rotation.getAsDouble();
+         polaridad = 1;
       }
       
 
         // Add a range of the joysticks in which the robot will not respond
-        
+         leftPower = m_forward.getAsDouble() + (m_rotation.getAsDouble() * 0.9);
+         rightPower = m_forward.getAsDouble() - (m_rotation.getAsDouble() * 0.9);
         
         
         // If the speeder button is pressed, reduce speed by half
@@ -86,7 +83,7 @@ public class DefaultDrive extends Command {
         
         // Set motor powers
         //System.out.println(m_drive.getAverageEncoderDistance());
-        RobotContainer.m_robotDrive.setMotors(leftPower, rightPower);
+        RobotContainer.m_robotDrive.setMotors(leftPower, rightPower, polaridad);
     
   }
 }

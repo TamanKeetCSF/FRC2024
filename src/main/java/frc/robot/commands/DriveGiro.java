@@ -39,7 +39,7 @@ public class DriveGiro extends Command {
   @Override
   public void execute() {
     //if (m_giro > 0){
-      m_drive.setMotorsRaw(m_speed, -m_speed);
+      m_drive.setMotorsRaw(m_speed, -m_speed, 1);
     //}
     //else{
       //m_drive.setMotorsRaw(-m_speed, m_speed);
@@ -49,7 +49,7 @@ public class DriveGiro extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_drive.setMotorsRaw(0, 0);
+    m_drive.setMotorsRaw(0, 0, 1);
   }
 
   // Returns true when the command should end.

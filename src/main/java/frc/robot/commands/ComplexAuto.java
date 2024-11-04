@@ -23,15 +23,16 @@ public class ComplexAuto extends SequentialCommandGroup {
   public ComplexAuto(DriveSubsystem drive, outake m_outake, pneumatics m_Pneumatics, intake m_intake) {
     addCommands(
     // Centro
+    new WaitCommand(0.7),
     new InstantCommand(() -> drive.encoderReset(), drive) ,
-    new speakerCommand(m_outake, m_Pneumatics, 3500),
+    new speakerCommand(m_outake, m_Pneumatics, 3900) /* ,
     new InstantCommand(() -> m_intake.activateIntake(), m_intake),
-    new DriveDistance(200, -0.5, drive),
+    new DriveDistance(210, -0.25, drive),
     new WaitCommand(0.5),
     new InstantCommand(() -> m_intake.stopIntake(), m_intake),
-    new DriveDistance(205, 0.4, drive),
-    new WaitCommand(0.5),
-    new speakerCommand(m_outake, m_Pneumatics, 3500)
+    new DriveDistance(226, 0.4, drive),
+    new WaitCommand(0.8),
+    new speakerCommand(m_outake, m_Pneumatics, 3900)*/
     
     );
         

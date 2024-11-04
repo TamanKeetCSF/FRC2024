@@ -15,6 +15,7 @@ import frc.robot.commands.ComplexAuto;
 import frc.robot.commands.DefaultDrive;
 import frc.robot.commands.DriveDistance;
 import frc.robot.commands.ampCommand;
+import frc.robot.commands.autoDerecha;
 import frc.robot.commands.autoIzquierda;
 import frc.robot.commands.speakerCommand;
 import frc.robot.subsystems.Controles;
@@ -51,6 +52,7 @@ public class RobotContainer {
   // A complex auto routine that shoots,  drives forward, sucks a note, and then drives backward.
   private final Command m_complexAuto = new ComplexAuto(m_robotDrive, m_outake, m_Pneumatics, m_intake);
   private final Command m_autoIzquierda = new autoIzquierda(m_robotDrive, m_outake, m_Pneumatics, m_intake);
+  private final Command m_autoDerecha = new autoDerecha(m_robotDrive, m_outake, m_Pneumatics, m_intake);
 
   // The driver's controller
 public static final Controles control = new Controles();
@@ -74,8 +76,7 @@ public static final Controles control = new Controles();
             () -> RobotContainer.control.getPS4().getRawButton(5),
             () -> RobotContainer.control.getPS4().getRawButton(6),
             () -> -RobotContainer.control.readPS4Axis(1),
-            () -> -RobotContainer.control.readPS4Axis(2),
-            () -> -RobotContainer.control.readPS4Axis(5)));   
+            () -> -RobotContainer.control.readPS4Axis(2)));   
 
   }
    
@@ -93,7 +94,6 @@ public static final Controles control = new Controles();
     
 
     final JoystickButton button1 = new JoystickButton(ControlMecanismos, 1); // A button
-    //final JoystickButton button2 = new JoystickButton(ControlMecanismos, 2); // B button
     final JoystickButton button3 = new JoystickButton(ControlMecanismos, 3); // X button
     final JoystickButton button4 = new JoystickButton(ControlMecanismos, 2);// B button
 
@@ -107,13 +107,8 @@ public static final Controles control = new Controles();
 
     //outakeS    
 
-    //button2.onTrue(new speakerCommand(m_outake, m_Pneumatics, 3500)); // Use desired target speed
-
-    //button2.onTrue(new InstantCommand(() -> m_outake.outakeSpeeker(), m_outake))
-      //     .onFalse(new InstantCommand(() -> m_outake.stopOutake(), m_outake));
-
     //outakeCome
-    //button3.onTrue(new ampCommand(m_outake, m_Pneumatics, 1100));
+
     button3.onTrue(new InstantCommand(() -> m_outake.outakeCome(), m_outake))
            .onFalse(new InstantCommand(() -> m_outake.stopOutake(), m_outake));
 
@@ -125,8 +120,8 @@ public static final Controles control = new Controles();
     Trigger rightTrigger = new Trigger(() -> ControlMecanismos.getRawAxis(3) > 0.5); // Right trigger
 
         // Bind commands to triggers
-    rightTrigger.onTrue(new speakerCommand(m_outake, m_Pneumatics, 3500)); // Command for left trigger
-    leftTrigger.onTrue(new ampCommand(m_outake, m_Pneumatics, 1000)); // Command for right trigger
+    rightTrigger.onTrue(new speakerCommand(m_outake, m_Pneumatics, 4000)); // Command for left trigger
+    leftTrigger.onTrue(new ampCommand(m_outake, m_Pneumatics, 750)); // Command for right trigger
   }
 
   /**
@@ -135,7 +130,8 @@ public static final Controles control = new Controles();
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    //return m_complexAuto;
-    return m_autoIzquierda;
+    //return m_complexAuto; // autonomo de centro
+    //return m_autoIzquierda; // izquierda para azul, derecha para rojo 
+    return m_autoDerecha; // derecha para azul, izquierda para rojo
   }
 }
