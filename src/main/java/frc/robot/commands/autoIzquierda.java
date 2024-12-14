@@ -35,7 +35,7 @@ public class autoIzquierda extends SequentialCommandGroup {
     new DriveGiro(45, -0.2, drive),
     new DriveDistance(40, 0.5, drive),
     new WaitCommand(0.8),
-    new speakerCommand(m_outake, m_Pneumatics, 3900)
+    new speakerCommand(m_outake, m_Pneumatics, 3600)
     
     );
         
