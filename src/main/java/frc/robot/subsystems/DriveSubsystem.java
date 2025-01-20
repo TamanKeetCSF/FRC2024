@@ -73,10 +73,10 @@ public class DriveSubsystem extends SubsystemBase {
     //m_rightLeader.set(ControlMode.PercentOutput, velocidadright);	
     //m_rightFollower.set(ControlMode.PercentOutput, velocidadright);
 
-    m_leftLeader.set(-velocidadleft);
-    m_leftFollower.set(-velocidadleft);
+    m_leftLeader.set(velocidadleft);
+    m_leftFollower.set(velocidadleft);
     m_rightLeader.set(velocidadright * polaridad );	
-    m_rightFollower.set(velocidadright);
+    m_rightFollower.set(-velocidadright);
     //System.out.println("left: " + velocidadleft);
     //System.out.println("right:" + velocidadright);
 }
@@ -93,7 +93,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
   
   private double scaleRight(double right) {
-    return 0.85 * right;
+    return 0.8 * right;
   }
 
   //Encoders

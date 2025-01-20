@@ -75,8 +75,8 @@ public static final Controles control = new Controles();
             () -> RobotContainer.control.getPS4().getRawButton(8),
             () -> RobotContainer.control.getPS4().getRawButton(5),
             () -> RobotContainer.control.getPS4().getRawButton(6),
-            () -> -RobotContainer.control.readPS4Axis(1),
-            () -> -RobotContainer.control.readPS4Axis(2)));   
+            () -> ControlMecanismos.getRawAxis(1),
+            () -> ControlMecanismos.getRawAxis(4)));   
 
   }
    
